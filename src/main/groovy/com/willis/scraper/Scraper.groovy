@@ -1,11 +1,13 @@
 package com.willis.scraper
 
+import groovy.util.logging.Slf4j
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 
 /**
  * Created by willis7 on 12/01/15.
  */
+@Slf4j
 public class Scraper {
     public static void main(String[] args) {
         scrapeTopic("/wiki/python");
@@ -21,7 +23,7 @@ public class Scraper {
         String html = getUrl("http://www.wikipedia.org/" + url)
         Document doc = Jsoup.parse(html)
         String contentText = doc.select("#mw-content-text > p").first().text()
-        System.out.println(contentText)
+        log.info contentText
     }
 
     /**
@@ -34,8 +36,7 @@ public class Scraper {
         try {
             urlObj = new URL(url);
         }catch(MalformedURLException e) {
-            System.out.println("The URL was malformed");
-            return "";
+            log.error "The URL was malformed"
         }
 
         URLConnection urlCon = null
@@ -50,8 +51,7 @@ public class Scraper {
                 outputText += line;
             }
         }catch(IOException e) {
-            System.out.println("There was an error connecting to the URL")
-            return ""
+            log.error "There was an error connecting to the URL"
         }
         return outputText;
     }
