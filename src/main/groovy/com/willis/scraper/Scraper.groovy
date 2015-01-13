@@ -1,9 +1,7 @@
-package com.willis.scraper;
+package com.willis.scraper
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import java.net.*;
-import java.io.*;
+import org.jsoup.Jsoup
+import org.jsoup.nodes.Document
 
 /**
  * Created by willis7 on 12/01/15.
@@ -20,10 +18,10 @@ public class Scraper {
      * @param url
      */
     private static void scrapeTopic(String url) {
-        String html = getUrl("http://www.wikipedia.org/"+url);
-        Document doc = Jsoup.parse(html);
-        String contentText = doc.select("#mw-content-text > p").first().text();
-        System.out.println(contentText);
+        String html = getUrl("http://www.wikipedia.org/" + url)
+        Document doc = Jsoup.parse(html)
+        String contentText = doc.select("#mw-content-text > p").first().text()
+        System.out.println(contentText)
     }
 
     /**
@@ -40,19 +38,20 @@ public class Scraper {
             return "";
         }
 
-        URLConnection urlCon = null;
-        BufferedReader in = null;
-        String outputText = "";
+        URLConnection urlCon = null
+        BufferedReader brdr = null
+        String outputText = ""
+
         try {
-            urlCon = urlObj.openConnection();
-            in = new BufferedReader(new InputStreamReader(urlCon.getInputStream()));
+            urlCon = urlObj.openConnection()
+            brdr = new BufferedReader(new InputStreamReader(urlCon.getInputStream()))
             String line = "";
-            while((line = in.readLine()) != null) {
+            while ((line = brdr.readLine()) != null) {
                 outputText += line;
             }
         }catch(IOException e) {
-            System.out.println("There was an error connecting to the URL");
-            return "";
+            System.out.println("There was an error connecting to the URL")
+            return ""
         }
         return outputText;
     }
