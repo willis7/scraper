@@ -16,8 +16,28 @@ public class Scraper {
     }
 
     static void scrapeResults(String url) {
-        Document doc = Jsoup.connect(url).get()
-        Element content = doc.getElementById("scrumArticlesBoxContent")
-        println content.text()
+
+        try{
+            def doc = Jsoup.connect(url).get()
+
+            // Strip the table from the page
+            def table = doc.select("table").first()
+            // Strip the rows from the table
+            def tbRows = table.select("tr")
+
+            // For each column in a row, print its contents if not empty
+            tbRows.each { row ->
+                 def tbCol = row.select("td")
+                 tbCol.each { column ->
+                     if(!column.text().empty) {
+                         println column.text()
+                     }
+                 }
+            }
+
+
+        }catch(IOException e) {
+            log.error("IOException", e)
+        }
     }
 }
